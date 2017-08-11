@@ -1,4 +1,26 @@
 
+const observe = (obj, {
+    context,
+    onBefore = () => {},
+    onAfter = () => {},
+    props: propsToIntercept
+  }) => {
+  return new Proxy(obj, {
+    get(targetObj, accessedProp, proxy) {
+      if (typeof targetObj[accessedProp] === 'function' && propsToIntercept.includes(accessedProp)) {
+        return function() {
+          onBefore.apply(context, [targetObj]);
+          var ret = Reflect.apply(targetObj[accessedProp], targetObj, arguments);
+          onAfter.apply(context, [targetObj]);
+          return ret;
+        }
+      } else {
+        return Reflect.get(targetObj, accessedProp, proxy)
+      }
+    }
+  })
+}
+
 class NegociacaoController {
 
   constructor() {
@@ -7,11 +29,20 @@ class NegociacaoController {
     this._inputQtd = $('#quantidade');
     this._inputValor = $('#valor');
 
-    this._negociacoes = new NegociacoesLista(model => {
-      this._negociacoesView.update(model);
+    this._negociacoes = observe(new NegociacoesLista(), {
+      context: this,
+      props: ['add', 'erase'],
+      onAfter: model => {
+        this._negociacoesView.update(model);
+      }
     });
-    this._mensagem = new Mensagem('', (model) => {
-      this._mensagemView.update(model);
+
+    this._mensagem = observe(new Mensagem(''), {
+      context: this,
+      props: ['texto'],
+      onAfter: model => {
+        this._mensagemView.update(model);
+      }
     });
 
 

@@ -1,8 +1,7 @@
 
 class Mensagem {
-  constructor(texto = '', onUpdate = (() => {})) {
+  constructor(texto = '') {
     this._texto = texto;
-    this._onUpdate = onUpdate;
   }
 
   get texto() {
@@ -10,7 +9,6 @@ class Mensagem {
   }
 
   set texto(texto) {
-    this._onUpdate(this);
     this._texto = texto
   }
 }
