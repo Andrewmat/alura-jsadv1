@@ -17,12 +17,11 @@ class NegociacoesLista {
       if (isNaN(n1[prop] - n2[prop])) {
         return 0;
       }
-      if (reverse) {
-        return n1[prop] - n2[prop];
-      } else {
-        return n2[prop] - n1[prop];
-      }
+      return n1[prop] - n2[prop];
     });
+    if (reverse) {
+      this._negociacoes.reverse();
+    }
     return this;
   }
 
