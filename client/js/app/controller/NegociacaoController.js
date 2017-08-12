@@ -10,7 +10,7 @@ class NegociacaoController {
     this._negociacoes = new Bind(
         new NegociacoesLista(),
         new NegociacoesView($('#negociacoes-view')),
-        'add', 'erase'
+        'add', 'erase', 'sort'
     );
 
     this._mensagem = new Bind(
@@ -18,6 +18,11 @@ class NegociacaoController {
       new MensagemView($('#mensagem-view')),
       'texto'
     );
+
+    this._sortConfig = {
+      prop: 'data',
+      reverse: false
+    };
 
     Object.freeze(this);
   }
@@ -47,18 +52,24 @@ class NegociacaoController {
   import() {
     let negociacaoService = new NegociacaoService();
     const onError = (err) => { throw new Error(err) };
-    Promise.all([
-      negociacaoService.requestFromWeek(),
-      negociacaoService.requestFrom1WeekBefore(),
-      negociacaoService.requestFrom2WeekBefore()
-    ]).then(resp => {
-      resp
-        .reduce((list, neg) => list.concat(neg), [])
-        .forEach(n => this._negociacoes.add(n));
-      this._mensagem.texto = 'Negociações importadas com sucesso';
-    }).catch(err => {
-      this._mensagem.texto = err.message;
-    });
+    negociacaoService.requestAll()
+      .then(neg => {
+        neg.forEach(n => this._negociacoes.add(n));
+        this._mensagem.texto = 'Negociações importadas com sucesso';
+      })
+      .catch(err => {
+        this._mensagem.texto = err.message;
+      });
+  }
+
+  sort(prop) {
+    if (this._sortConfig.prop === prop) {
+      this._sortConfig.reverse = !this._sortConfig.reverse;
+    } else {
+      this._sortConfig.prop = prop;
+      this._sortConfig.reverse = false;
+    }
+    console.log(this._negociacoes.sort(this._sortConfig));
   }
 
   resetar() {

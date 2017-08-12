@@ -6,10 +6,10 @@ class NegociacoesView extends GenericView {
       <table class="table table-hover table-bordered">
         <thead>
             <tr>
-                <th>DATA</th>
-                <th>QUANTIDADE</th>
-                <th>VALOR</th>
-                <th>VOLUME</th>
+                <th onclick="negociacaoController.sort('data')">DATA</th>
+                <th onclick="negociacaoController.sort('quantidade')">QUANTIDADE</th>
+                <th onclick="negociacaoController.sort('valor')">VALOR</th>
+                <th onclick="negociacaoController.sort('volume')">VOLUME</th>
             </tr>
         </thead>
 
