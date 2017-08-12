@@ -44,6 +44,19 @@ class NegociacaoController {
     this._mensagem.texto = 'Lista esvaziada';
   }
 
+  import() {
+    let negociacaoService = new NegociacaoService();
+    negociacaoService.fromWeek((err, neg) => {
+      if (err) {
+        this._mensagem.texto = 'Erro ao importar negociações';
+        console.error(err);
+        return;
+      }
+      neg.forEach(n => this._negociacoes.add(n));
+      this._mensagem.texto = 'Negociações importadas com sucesso';
+    });
+  }
+
   resetar() {
     this._inputData.value = '';
     this._inputQtd.value = 1

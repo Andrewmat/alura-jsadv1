@@ -28,12 +28,7 @@ class NegociacoesView extends GenericView {
         <tfoot>
           <tr>
             <td colspan="3">TOTAL</td>
-            <td>
-              ${
-                model.negociacoes
-                  .reduce((attr, m) => attr += m.volume, 0.0)
-              }
-            </td>
+            <td>${model.volumeTotal()}</td>
           </tr>
         </tfoot>
       </table>`;

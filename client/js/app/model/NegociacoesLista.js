@@ -15,4 +15,8 @@ class NegociacoesLista {
   erase() {
     this._negociacoes = [];
   }
+
+  volumeTotal() {
+    return this._negociacoes.reduce((s, n) => s + n.volume, 0);
+  }
 }
