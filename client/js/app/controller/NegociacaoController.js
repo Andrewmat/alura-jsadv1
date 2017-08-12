@@ -46,14 +46,18 @@ class NegociacaoController {
 
   import() {
     let negociacaoService = new NegociacaoService();
-    negociacaoService.fromWeek((err, neg) => {
-      if (err) {
-        this._mensagem.texto = 'Erro ao importar negociações';
-        console.error(err);
-        return;
-      }
-      neg.forEach(n => this._negociacoes.add(n));
+    const onError = (err) => { throw new Error(err) };
+    Promise.all([
+      negociacaoService.requestFromWeek(),
+      negociacaoService.requestFrom1WeekBefore(),
+      negociacaoService.requestFrom2WeekBefore()
+    ]).then(resp => {
+      resp
+        .reduce((list, neg) => list.concat(neg), [])
+        .forEach(n => this._negociacoes.add(n));
       this._mensagem.texto = 'Negociações importadas com sucesso';
+    }).catch(err => {
+      this._mensagem.texto = err.message;
     });
   }
 
