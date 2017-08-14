@@ -69,7 +69,7 @@ class NegociacaoController {
       this._sortConfig.prop = prop;
       this._sortConfig.reverse = false;
     }
-    console.log(this._negociacoes.sort(this._sortConfig));
+    this._negociacoes.sort(this._sortConfig);
   }
 
   resetar() {
