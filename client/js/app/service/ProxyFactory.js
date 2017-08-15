@@ -1,3 +1,4 @@
+'use strict';
 
 class ProxyFactory {
   static create(obj, {

@@ -1,3 +1,4 @@
+'use strict';
 
 class Bind {
   constructor(obj, view, ...props) {

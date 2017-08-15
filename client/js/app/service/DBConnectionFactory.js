@@ -1,3 +1,4 @@
+'use strict';
 
 const DBConnectionFactory = (() => {
   const DB_NAME = 'aluraframe';

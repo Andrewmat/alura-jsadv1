@@ -1,3 +1,4 @@
+'use strict';
 
 class HttpService {
 
@@ -5,7 +6,7 @@ class HttpService {
     throw new Error('HttpService should not be instantiated');
   }
 
-  _readyStateChangeHandler(xhr, resolve, reject) {
+  static _readyStateChangeHandler(xhr, resolve, reject) {
     return () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
@@ -21,7 +22,7 @@ class HttpService {
     let xhr = new XMLHttpRequest();
     return new Promise((resolve, reject) => {
       xhr.open('GET', url);
-      xhr.onreadystatechange = _readyStateChangeHandler(xhr, resolve, reject);
+      xhr.onreadystatechange = HttpService._readyStateChangeHandler(xhr, resolve, reject);
       xhr.send();
     });
   }
@@ -31,7 +32,7 @@ class HttpService {
     return new Promise((resolve, reject) => {
       xhr.open('POST', url);
       xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = _readyStateChangeHandler(xhr, resolve, reject);
+      xhr.onreadystatechange = HttpService._readyStateChangeHandler(xhr, resolve, reject);
       xhr.send(typeof data === 'string' ? data : JSON.stringify(data));
     });
   }

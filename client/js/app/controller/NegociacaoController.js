@@ -1,3 +1,4 @@
+'use strict';
 
 class NegociacaoController {
 
@@ -24,16 +25,27 @@ class NegociacaoController {
       reverse: false
     };
 
-    Object.freeze(this);
+    DBConnectionFactory
+      .getInstance()
+      .then(connection => new NegociacaoDAO(connection).getAll())
+      .then(list =>
+        list.forEach(n =>
+          this._negociacoes.add(n)
+        )
+      );
   }
 
   adiciona(event) {
     event.preventDefault();
-    let negociacao = this._buildNegociacao();
-    this._negociacoes.add(negociacao);
-    this._mensagem.texto = 'Negociação adicionada com sucesso';
-
-    this.resetar();
+    let novaNegociacao = this._buildNegociacao();
+    DBConnectionFactory.getInstance()
+      .then(connection => new NegociacaoDAO(connection).insert(novaNegociacao))
+      .then(() => {
+        this._negociacoes.add(novaNegociacao);
+        this._mensagem.texto = 'Negociação adicionada com sucesso';
+        this.resetar();
+      })
+      .catch(err => this._mensagem.texto = err);
   }
 
   _buildNegociacao() {
@@ -54,12 +66,33 @@ class NegociacaoController {
     const onError = (err) => { throw new Error(err) };
     negociacaoService.requestAll()
       .then(neg => {
-        neg.forEach(n => this._negociacoes.add(n));
+        DBConnectionFactory.getInstance()
+          .then(connection => new NegociacaoDAO(connection))
+          .then(dao => {
+            neg.forEach(n =>
+              dao.insert(n)
+                .then(() => this._negociacoes.add(n))
+                .catch(e => {throw e})
+            );
+          })
+      })
+      .then(() => {
         this._mensagem.texto = 'Negociações importadas com sucesso';
       })
       .catch(err => {
         this._mensagem.texto = err.message;
       });
+  }
+
+  erase() {
+    DBConnectionFactory
+      .getInstance()
+      .then(connection => new NegociacaoDAO(connection).clear())
+      .then(message => {
+        this._negociacoes.erase();
+        this._mensagem.texto = message;
+      })
+      .catch(err => this._mensagem.texto = err);
   }
 
   sort(prop) {
