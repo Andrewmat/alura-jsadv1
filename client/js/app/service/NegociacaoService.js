@@ -23,18 +23,65 @@ class NegociacaoService {
     });
   }
 
+  insert(negociacao) {
+    return DBConnectionFactory.getInstance()
+    .then(connection => new NegociacaoDAO(connection).insert(negociacao))
+    .then(() => 'Negociação adicionada com sucesso')
+    .catch(err => {
+      console.error(err);
+      throw new Error('Não foi possível adicionar negociação');
+    });
+  }
+
+  list() {
+    return DBConnectionFactory
+      .getInstance()
+      .then(connection => new NegociacaoDAO(connection).getAll())
+      .catch(err => {
+        console.error(err);
+        throw new Error('Não foi possível obter negociações');
+      })
+  }
+
+  erase() {
+    return DBConnectionFactory
+      .getInstance()
+      .then(connection => new NegociacaoDAO(connection).clear())
+      .then(() => 'Negociações limpas com sucesso')
+      .catch(err => {
+        console.error(err);
+        throw new Error('Não foi possível limpar as negociações');
+      });
+  }
+
+  import(currList) {
+    return this.requestAll()
+      .then(negImport =>
+        negImport.filter(ni =>
+          !currList.some(nl => nl.equals(ni))
+        )
+      )
+      .then(list =>
+        DBConnectionFactory.getInstance()
+          .then(connection => new NegociacaoDAO(connection))
+          .then(dao => Promise.all(list.map(n => dao.insert(n))))
+      )
+      .catch(err => {
+        console.error(err);
+        throw new Error('Não foi possível importar negociações');
+      });
+  }
+
   _request(endpoint) {
     return HttpService
       .get(endpoint)
-      .then(response => {
-        let negociacoes = JSON.parse(response)
+      .then(response => response
         .map(obj => new Negociacao(
             new Date(obj.data),
             obj.quantidade,
             obj.valor
-        ));
-        return negociacoes;
-      })
+        ))
+      )
       .catch(err => {
         console.error(err);
         throw new Error('Erro ao importar negociações');

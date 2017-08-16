@@ -13,7 +13,7 @@ class NegociacaoDAO {
         .objectStore(this._store)
         .add(negociacao);
       request.onsuccess = e => {
-        resolve();
+        resolve(negociacao);
       };
       request.onerror = e => {
         console.error(e.target.error);
