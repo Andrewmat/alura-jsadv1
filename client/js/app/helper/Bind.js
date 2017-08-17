@@ -1,6 +1,7 @@
 'use strict';
+import { ProxyFactory } from '../service/ProxyFactory';
 
-class Bind {
+export class Bind {
   constructor(obj, view, ...props) {
     let proxy = ProxyFactory.create(obj, {
       props,

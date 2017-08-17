@@ -1,7 +1,6 @@
 'use strict';
 
-class DateHelper {
-
+export class DateHelper {
   static asString(date) {
     return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
   }

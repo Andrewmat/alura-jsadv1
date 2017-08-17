@@ -1,6 +1,7 @@
 'use strict';
+import { Negociacao } from '../model/Negociacao';
 
-class NegociacaoDAO {
+export class NegociacaoDAO {
   constructor(connection) {
     this._connection = connection;
     this._store = 'negociacoes';

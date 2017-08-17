@@ -1,6 +1,6 @@
 'use strict';
 
-class NegociacoesLista {
+export class NegociacoesLista {
   constructor() {
     this._negociacoes = [];
   }

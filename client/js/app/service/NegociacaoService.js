@@ -1,6 +1,10 @@
 'use strict';
+import { HttpService } from './HttpService';
+import { DBConnectionFactory } from './DBConnectionFactory';
+import { Negociacao } from '../model/Negociacao';
+import { NegociacaoDAO } from '../dao/NegociacaoDAO';
 
-class NegociacaoService {
+export class NegociacaoService {
 
   requestFromWeek() {
     return this._request('/negociacoes/semana');

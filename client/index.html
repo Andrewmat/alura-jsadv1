@@ -13,7 +13,7 @@
 
     <div id="mensagem-view"></div>
 
-    <form class="form" onsubmit="negociacaoController.adiciona(event)">
+    <form class="form">
 
         <div class="form-group">
             <label for="data">Data</label>
@@ -34,10 +34,7 @@
     </form>
 
     <div class="text-center">
-        <!-- <button class="btn btn-primary text-center" type="button" onclick="negociacaoController.import();">
-            Importar Negociações
-        </button> -->
-        <button class="btn btn-primary text-center" type="button" onclick="negociacaoController.erase()">
+        <button id="btn-erase" class="btn btn-primary text-center" type="button">
             Apagar
         </button>
     </div>
@@ -46,20 +43,23 @@
 
     <div id="negociacoes-view"></div>
 
-    <script type="text/javascript" src="js/dist/model/Negociacao.js"></script>
-    <script type="text/javascript" src="js/dist/model/NegociacoesLista.js"></script>
-    <script type="text/javascript" src="js/dist/model/Mensagem.js"></script>
-    <script type="text/javascript" src="js/dist/view/GenericView.js"></script>
-    <script type="text/javascript" src="js/dist/view/NegociacoesView.js"></script>
-    <script type="text/javascript" src="js/dist/view/MensagemView.js"></script>
-    <script type="text/javascript" src="js/dist/controller/NegociacaoController.js"></script>
-    <script type="text/javascript" src="js/dist/service/ProxyFactory.js"></script>
-    <script type="text/javascript" src="js/dist/service/HttpService.js"></script>
-    <script type="text/javascript" src="js/dist/service/NegociacaoService.js"></script>
-    <script type="text/javascript" src="js/dist/service/DBConnectionFactory.js"></script>
-    <script type="text/javascript" src="js/dist/dao/NegociacaoDAO.js"></script>
-    <script type="text/javascript" src="js/dist/helper/DateHelper.js"></script>
-    <script type="text/javascript" src="js/dist/helper/Bind.js"></script>
-    <script type="text/javascript" src="js/dist/index.js"></script>
+    <script type="text/javascript" src="node_modules/systemjs/dist/system.js"></script>
+    <script>
+        SystemJS.config({
+            map: {
+                mypkg: 'js/dist'
+            },
+            packages: {
+                mypkg: {
+                    main: './index.js',
+                    defaultExtension: 'js'
+                }
+            }
+        });
+        // SystemJS.defaultJSExtensions = true;
+        SystemJS.import('mypkg').catch(function(err) {
+            console.error(err);
+        });
+    </script>
 </body>
 </html>

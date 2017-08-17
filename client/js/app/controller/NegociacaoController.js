@@ -1,4 +1,12 @@
 'use strict';
+import { Negociacao } from '../model/Negociacao';
+import { Mensagem } from '../model/Mensagem';
+import { NegociacoesLista } from '../model/NegociacoesLista';
+import { NegociacoesView } from '../view/NegociacoesView';
+import { MensagemView } from '../view/MensagemView';
+import { NegociacaoService } from '../service/NegociacaoService';
+import { Bind } from '../helper/Bind';
+import { DateHelper } from '../helper/DateHelper';
 
 class NegociacaoController {
 
@@ -99,4 +107,9 @@ class NegociacaoController {
     this._inputValor.value = 0;
     this._inputData.focus();
   }
+}
+
+let instance = new NegociacaoController();
+export function negociacaoController() {
+  return instance;
 }

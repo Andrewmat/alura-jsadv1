@@ -1,2 +1,3 @@
 client/js/dist/
 node_modules
+.vscode

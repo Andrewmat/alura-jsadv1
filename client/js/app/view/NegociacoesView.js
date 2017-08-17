@@ -1,16 +1,27 @@
 'use strict';
+import { GenericView } from './GenericView';
+import { DateHelper } from '../helper/DateHelper';
+import { negociacaoController } from '../controller/NegociacaoController';
 
-class NegociacoesView extends GenericView {
+export class NegociacoesView extends GenericView {
+
+  constructor(elem) {
+    super(elem);
+    this.addEventListener('click', '[data-sort]', e => {
+      let sortAttr = e.getAttribute('data-sort');
+      negociacaoController().sort(sortAttr);
+    });
+  }
 
   template(model) {
     return `
       <table class="table table-hover table-bordered">
         <thead>
             <tr>
-                <th onclick="negociacaoController.sort('data')">DATA</th>
-                <th onclick="negociacaoController.sort('quantidade')">QUANTIDADE</th>
-                <th onclick="negociacaoController.sort('valor')">VALOR</th>
-                <th onclick="negociacaoController.sort('volume')">VOLUME</th>
+                <th data-sort="data">DATA</th>
+                <th data-sort="quantidade"">QUANTIDADE</th>
+                <th data-sort="valor">VALOR</th>
+                <th data-sort="volume">VOLUME</th>
             </tr>
         </thead>
 

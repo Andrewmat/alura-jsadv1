@@ -1,6 +1,6 @@
 'use strict';
 
-class HttpService {
+export class HttpService {
   constructor() {
     throw new Error('HttpService should not be instantiated');
   }

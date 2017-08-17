@@ -1,6 +1,6 @@
 'use strict';
 
-class Mensagem {
+export class Mensagem {
   constructor(texto = '') {
     this._texto = texto;
   }
